@@ -2,5 +2,185 @@
   width: 100%;
   height: 88vh;
   display: flex;
+  justify-content: flex-start;
+}
+.tracks-others-container{
+  width: 62%;
+  margin-left: 1%;
+  padding: 2rem 1rem;
+  max-width: 100%;
+  overflow-y: auto;
+}
+
+.tracks-others-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tracks-others-container::-webkit-scrollbar-thumb {
+  background-color: #1DB954;
+  border-radius: 20px;
+}
+
+.album-track-container .search-bar {
+  width: 30%;
+  margin-left: 0;
+}
+
+.album-track-container .search-menu {
+  width: 100%;
+  display: flex;
   justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.btn-container button{
+  background-color: #1DB954;
+  border: none;
+  height: 5vh;
+  width: 8vw;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 15px 0 0 15px;
+  transition: ease-in-out .3s;
+}
+
+.btn-middle {
+  border-radius: 0px !important;
+}
+
+.btn-last {
+  border-radius: 0px 15px 15px 0px !important;
+}
+
+.btn-container button:hover{
+  background-color: #17e25e;
+  cursor: pointer;
+}
+
+.album-track-container .track-header {
+  width: 100%;
+  color: #fff;
+  font-size: 1.5rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid #1DB954;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.track-list {
+  list-style: none;
+  padding: 1rem 0;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.track-list li div{
+  width: 90%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.track-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem .3rem;
+  border-bottom: 1px solid #c4c4c4;
+  color: #fff;
+}
+
+.track-list li:hover{
+  background: linear-gradient(90.15deg, #088333 0%, #295539 100%);
+  cursor: pointer;
+}
+
+.active{
+  background-color: #17e25e;
+}
+
+.track-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.track-list::-webkit-scrollbar-thumb {
+  background-color: #1DB954;
+  border-radius: 20px;
+}
+
+/* -------- Others albumn ------ */
+
+.others-albums {
+  width: 100%;
+  margin-top: 2rem;
+}
+.others-albums div{
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.others-albums div a{
+  text-decoration: none;
+  color: #c4c4c4;
+  font-size: 1.3rem;
+  transition: ease-in-out .3s;
+}
+
+.others-albums div a:hover {
+  color: #1DB954;
+}
+
+.others-container-row {
+  width: 100%;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+/* --------- Album Card --------- */
+
+.album-card{
+  position: relative;
+  margin-top: 1rem;
+}
+
+.album-card img{
+  width: 12rem;
+  height: 12rem;
+  border-radius: 15px;
+}
+.album-card .content {
+  width: 100%;
+  padding-left: 1rem;
+  height: 8vh;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  background: rgba(51, 51, 51, 0.5);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: ease-in-out .3s;
+  border-radius: 0 0 15px 15px;
+}
+
+.album-card .content h6 {
+  max-width: 20ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.album-card .content p{
+  font-size: .8rem;
+}
+
+.album-card:hover .content{
+  opacity: 1;
 }
