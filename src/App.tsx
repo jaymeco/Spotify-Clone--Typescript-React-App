@@ -1,4 +1,5 @@
-import Home from 'pages/Dashboard/Home';
+import Home from './pages/Dashboard/Home';
+import './styles/global.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 function App() {
   return (

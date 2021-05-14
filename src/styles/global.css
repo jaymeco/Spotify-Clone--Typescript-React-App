@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&family=Barlow:wght@400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #333;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Archivo', sans-serif;
+}
+
+p, button, input, a {
+  font-family: 'Barlow', sans-serif;
+}
