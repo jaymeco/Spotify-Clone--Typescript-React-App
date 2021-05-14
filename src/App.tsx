@@ -1,9 +1,14 @@
-
+import Home from 'pages/Dashboard/Home';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 function App() {
   return (
-    <div className="App">
-      <h1>Olá Mundo!</h1>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/home" exact >
+          <Home/>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
