@@ -21,3 +21,22 @@
   width: 13vw;
   height: 9vh;
 }
+
+.back-button {
+  border: none;
+  background-color: #1DB954;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  padding-right: .15rem;
+  margin-right: .8rem;
+  transition: ease-in-out .3s;
+}
+
+.back-button:hover {
+  background-color: #17e25e;
+  cursor: pointer;
+}
