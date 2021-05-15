@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import Banner from './components/Banner';
@@ -75,16 +76,12 @@ export default function ViewAlbum() {
             <div className="others-container-row">
               {
                 state.map(item=>(
-                  <Link key={item} className="album-card" to="/album">
-                    <img
-                      src="https://i.scdn.co/image/ab67616d00001e026afa62d8424c574900eff429"
-                      alt="Album - "
-                    />
-                    <div className="content">
-                      <h6>Piece of Mind (2015 Remaster)</h6>
-                      <p>2003</p>
-                    </div>
-                  </Link>
+                  <AlbumCard
+                    key={item}
+                    album_image="https://i.scdn.co/image/ab67616d00001e026afa62d8424c574900eff429"
+                    album_name="Piece of Mind (2015 Remaster)"
+                    album_year="2003"
+                  />
                 ))
               }
             </div>
