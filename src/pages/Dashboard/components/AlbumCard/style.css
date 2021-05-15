@@ -30,9 +30,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: #fff;
 }
 .album-card .content p{
   font-size: .8rem;
+  color: #fff;
 }
 
 .album-card:hover .content{
