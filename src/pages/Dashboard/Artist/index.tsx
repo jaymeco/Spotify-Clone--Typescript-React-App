@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
+import Banner from './components/Banner';
 import './style.css';
 
 export default function Artist() {
@@ -29,14 +30,7 @@ export default function Artist() {
     <>
       <Header />
       <div className="artist-container">
-        <div className="artist-banner">
-          <img
-            src="https://i.scdn.co/image/6dc0be659ea462b84b9b6485bc20db8dffaa48e2"
-            alt={`Artist - `}
-          />
-          <h1>Iron Maiden</h1>
-          <p>6.248.616 ouvintes mensais</p>
-        </div>
+        <Banner/>
         <div className="popular-others-container">
           <div className="popular-track-container">
             <h1>Músicas Populares</h1>
