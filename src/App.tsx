@@ -3,6 +3,7 @@ import './styles/global.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ViewAlbum from './pages/Dashboard/ViewAlbum';
 import Artist from './pages/Dashboard/Artist';
+import Discography from './pages/Dashboard/Discography';
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,9 @@ function App() {
         </Route>
         <Route path="/artist" exact >
           <Artist/>
+        </Route>
+        <Route path="/artist/discography" exact >
+          <Discography/>
         </Route>
       </Switch>
     </BrowserRouter>

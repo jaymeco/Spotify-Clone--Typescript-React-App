@@ -55,7 +55,7 @@ export default function Artist() {
           <div className="others-albums">
             <div>
               <h2>Outros álbuns do artista</h2>
-              <Link to="/artists/discography">DISCOGRAFIA</Link>
+              <Link to="/artist/discography">DISCOGRAFIA</Link>
             </div>
             <div className="others-container-row">
               {
