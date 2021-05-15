@@ -1,0 +1,98 @@
+.artist-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.artist-banner {
+  background-color: #3E3E3E;
+  width: 30%;
+  height: 100%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 0rem;
+}
+
+.artist-banner img{
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.artist-banner h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.artist-banner p {
+  font-size: 1.1rem;
+  color: #c4c4c4;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* ---------- Popular and Others Container -------- */
+
+.popular-others-container {
+  width: 70%;
+  max-height: 100%;
+  /* margin-left: 3%; */
+  overflow: auto;
+  padding: 0rem 2rem;
+}
+
+.popular-others-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.popular-others-container::-webkit-scrollbar-thumb {
+  background-color: #1DB954;
+  border-radius: 20px;
+}
+
+.popular-track-container{
+  color: #fff;
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.popular-track-list {
+  width: 100%;
+  list-style: none;
+  max-height: 50vh;
+  overflow-y: auto;
+  margin-top: 2rem;
+}
+
+.popular-track-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.popular-track-list::-webkit-scrollbar-thumb {
+  background-color: #1DB954;
+  border-radius: 20px;
+}
+
+.popular-track-list li {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .3rem .3rem;
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.popular-track-list li div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 35%;
+  font-weight: bold;
+}
+
+.popular-track-list li img {
+  width: 3rem;
+  height: 3rem;
+}
