@@ -22,7 +22,7 @@ export default function InitialCard({ album_name, album_url, album_year, artist 
       </div>
       <div className="card-content">
         <h4>{album_name}</h4>
-        <p>{artist} • {album_year}</p>
+        <p><Link to="/artist">{artist}</Link> • {album_year}</p>
       </div>
     </Link>
   )

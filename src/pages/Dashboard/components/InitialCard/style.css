@@ -61,6 +61,16 @@
   color: #fff;
 }
 
+.card-content p a {
+  text-decoration: none;
+  color: #fff;
+  transition: ease-in-out .3s;
+}
+
+.card-content p a:hover {
+  color: #1DB954;
+}
+
 .card-content h4 {
   font-size: 1.3rem;
   margin-bottom: .5rem;
