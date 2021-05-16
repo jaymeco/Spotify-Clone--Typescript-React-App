@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import AlbumCard from "../components/AlbumCard";
 import Header from "../components/Header";
 import './style.css';
@@ -32,7 +33,7 @@ export default function Discography() {
           src="https://i.scdn.co/image/6dc0be659ea462b84b9b6485bc20db8dffaa48e2"
           alt={`Artist - `}
         />
-        <h2>Iron Maiden</h2>
+        <Link to="/artist">Iron Maiden</Link>
       </div>
       <div className="discography-container">
         <div className="discography-row">
