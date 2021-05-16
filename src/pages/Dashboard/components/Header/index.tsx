@@ -24,7 +24,11 @@ export default function Header() {
           <Link to="/home">
             <img src={logo} alt="Logo Spotify" />
           </Link>
-          <SearchBar />
+          {
+            navigation.location.pathname === '/home'? (
+              <SearchBar />
+            ): null
+          }
         </div>
         <h3>Playlists</h3>
       </header>
