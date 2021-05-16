@@ -17,7 +17,7 @@ export default function Header() {
                 onClick={()=>navigation.goBack()}
                 className="back-button"
               >
-                <IoIosArrowBack size={25} color="#fff" />
+                <IoIosArrowBack size={20} color="#fff" />
               </button>
             ): null
           }
