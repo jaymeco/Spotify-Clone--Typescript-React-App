@@ -9,7 +9,10 @@ export default function Header() {
 
   return (
     <>
-      <header className="main-header">
+      <header 
+        className={`main-header 
+        ${navigation.location.pathname !== '/home'? 'hide': ''}`}
+      >
         <div>
           {
             navigation.location.pathname !== '/home'? (
