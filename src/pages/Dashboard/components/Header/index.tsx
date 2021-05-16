@@ -1,4 +1,4 @@
-import logo from '../../../../assets/images/logo.svg';
+import logo from '../../../../assets/images/logo.png';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useHistory } from 'react-router-dom';
 import SearchBar from '../SearchBar';

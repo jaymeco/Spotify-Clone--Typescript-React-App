@@ -4,7 +4,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .5rem .8rem .5rem .5rem;
+  padding: .3rem .8rem .3rem .5rem;
 }
 
 .main-header div {
@@ -14,12 +14,11 @@
 
 .main-header h3 {
   color: #fff;
-  font-size: 1.7rem;
+  font-size: 1.3rem;
 }
 
 .main-header div img {
-  width: 13vw;
-  height: 9vh;
+  width: 7rem;
 }
 
 .back-button {
