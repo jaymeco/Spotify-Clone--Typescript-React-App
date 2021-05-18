@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../../../services/api';
+import { Loading } from '../../components/Loading';
 import Header from '../components/Header';
 import InitialCard from '../components/InitialCard';
 import './style.css';
@@ -23,12 +24,15 @@ interface IItems {
 
 export default function Home() {
   const [state, setState] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(()=> {
     async function Data() {
       try {
         const { data } = await api.get('/albums/new-realeses');
-        console.log(data?.albums.items);
+        
         setState(data?.albums.items);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -36,6 +40,8 @@ export default function Home() {
     }
     Data();
   }, [])
+
+  if(isLoading) return <Loading/>
   return (
     <>
       <Header />
