@@ -3,6 +3,7 @@ import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
 import Header from '../components/Header';
 import InitialCard from '../components/InitialCard';
+import SearchCard from './components/SearchCard';
 import './style.css';
 
 interface IArtists {
@@ -46,6 +47,7 @@ export default function Home() {
     <>
       <Header />
       <div className="home-container">
+        <SearchCard/>
         <h2>Álbuns recém lançados</h2>
         <div className="container-row">
           {
