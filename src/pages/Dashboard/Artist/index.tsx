@@ -47,19 +47,19 @@ export default function Artist() {
       try {
         const { id } = params;
         
-        const { data } = await api.get(`artists/${id}`);
+        const { data } = await api.get(`/artists/${id}`);
 
         console.log(data.some_albums);
         setArtist(data.artist)
         setState(data.top_track?.tracks)
         setSomeAlbums(data.some_albums?.items);
       } catch (error) {
-        console.log(error.message);
+        console.log(error.response);
       }
 
     }
     getData();
-  }, [])
+  }, [params])
 
   return (
     <>
@@ -108,6 +108,7 @@ export default function Artist() {
                 someAlbums.map((album: IAlbum) => (
                   <AlbumCard
                     key={album.id}
+                    album_id={album.id as string}
                     album_image={album.images[0].url}
                     album_name={album.name}
                     album_year={new Date(album.release_date as string).getFullYear().toString()}

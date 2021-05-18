@@ -1,43 +1,76 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { api } from '../../../services/api';
 import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import Banner from './components/Banner';
 import './style.css';
 
-export default function ViewAlbum() {
-  const [state, setState] = useState([
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17
-  ])
+interface IImages {
+  url: string;
+}
 
+interface ITrack {
+  id: string;
+  name: string;
+  duration_ms: number;
+  disc_number: number;
+}
+
+interface ITracks {
+  items: ITrack[];
+}
+
+interface IAlbum {
+  images: IImages[];
+  name: string;
+  release_date?: string;
+  id?: string;
+  tracks: ITracks;
+  total_tracks: number;
+}
+
+interface IArtist {
+  images: IImages[];
+  name: string;
+  id: string;
+}
+
+export default function ViewAlbum() {
+  const params = useParams<{id: string}>();
+  const [state, setState] = useState([])
+  const [artist, setArtist] = useState<IArtist>();
+  const [albums, setAlbums] = useState<IAlbum[]>();
+  const [album, setAlbum] = useState<IAlbum>();
+
+  useEffect(()=> {
+    async function getData(){
+      try {
+        const { id } = params;
+        const {data} = await api.get(`/album/${id}`);
+
+        setAlbums(data.some_albums.items);
+        setArtist(data.artist);
+        setAlbum(data.album);
+      } catch (error) {
+        console.log(error.response);
+      }
+    }
+    getData()
+  }, [params])
   return (
     <>
       <Header />
       <div className="album-container">
         <Banner
-          artist_name="Iron Maiden"
-          artist_image="https://i.scdn.co/image/6dc0be659ea462b84b9b6485bc20db8dffaa48e2"
-          album_name="Nights of the Dead, Legacy of the Beast: Live in Mexico City"
-          album_year="2020"
-          album_image="https://i.scdn.co/image/ab67616d0000b27358057301afd41e6efaa5b547"
-          tracks={17}
+          artist_id={artist?.id as string}
+          artist_name={artist?.name as string}
+          artist_image={artist?.images[0].url as string}
+          album_name={album?.name as string}
+          album_year={new Date(album?.release_date as string).getFullYear().toString()}
+          album_image={album?.images[0].url as string}
+          tracks={album?.total_tracks as number}
           total_time={2000000}
         />
         <div className="tracks-others-container">
@@ -56,13 +89,13 @@ export default function ViewAlbum() {
             </div>
             <ul className="track-list">
               {
-                state.map(item => (
-                  <li key={item}>
+                album?.tracks.items.map((track, index) => (
+                  <li key={track.id}>
                     <div>
-                      <p>{item}</p>
-                      <p>Churchill’s Speech - Live in Mexico City, Palacio de los Deportes, Mexico, September 2019</p>
+                      <p>{index + 1}</p>
+                      <p>{track.name}</p>
                     </div>
-                    <p>0:38</p>
+                    <p>{track.duration_ms}</p>
                   </li>
                 ))
               }
@@ -71,16 +104,17 @@ export default function ViewAlbum() {
           <div className="others-albums">
             <div>
               <h2>Outros álbuns do artista</h2>
-              <Link to="artist/discography">DISCOGRAFIA</Link>
+              <Link to={`/artist/${artist?.id}/discography`}>DISCOGRAFIA</Link>
             </div>
             <div className="others-container-row">
               {
-                state.map(item=>(
+                albums?.map(album=>(
                   <AlbumCard
-                    key={item}
-                    album_image="https://i.scdn.co/image/ab67616d00001e026afa62d8424c574900eff429"
-                    album_name="Piece of Mind (2015 Remaster)"
-                    album_year="2003"
+                    album_id={album.id as string}
+                    key={album.id}
+                    album_image={album.images[0].url}
+                    album_name={album.name}
+                    album_year={new Date(album.release_date as string).getFullYear().toString()}
                   />
                 ))
               }

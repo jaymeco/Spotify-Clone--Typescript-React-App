@@ -1,36 +1,49 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { api } from "../../../services/api";
 import AlbumCard from "../components/AlbumCard";
 import Header from "../components/Header";
 import './style.css';
 
+
+interface IImages {
+  url: string;
+}
+
+interface IAlbum {
+  images: IImages[];
+  name: string;
+  release_date?: string;
+  id?: string;
+}
 export default function Discography() {
-  const [state, setState] = useState([
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17
-  ])
+  const params = useParams<{id: string}>();
+  const [state, setState] = useState([])
+  const [artist, setArtist] = useState({})
+
+  useEffect(()=> {
+    async function getDate() {
+      try {
+        const { id } = params;
+
+        const { data } = await api.get(`/artists/albums/${id}`);
+
+        console.log(data);
+        setState(data.items);
+        setArtist(data.items[0]?.artists[0])
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getDate();
+  }, [])
 
   return (
     <>
       <Header />
       <div className="discography-header">
         <img
-          src="https://i.scdn.co/image/6dc0be659ea462b84b9b6485bc20db8dffaa48e2"
+          src={''}
           alt={`Artist - `}
         />
         <Link to="/artist">Iron Maiden</Link>
@@ -38,12 +51,13 @@ export default function Discography() {
       <div className="discography-container">
         <div className="discography-row">
           {
-            state.map(item => (
+            state.map((album: IAlbum) => (
               <AlbumCard
-                key={item}
-                album_image="https://i.scdn.co/image/ab67616d00001e026afa62d8424c574900eff429"
-                album_name="Piece of Mind (2015 Remaster)"
-                album_year="2003"
+                key={album.id}
+                album_id={album.id as string}
+                album_image={album.images[0].url}
+                album_name={album.name}
+                album_year={new Date(album.release_date as string).getFullYear().toString()}
               />
             ))
           }

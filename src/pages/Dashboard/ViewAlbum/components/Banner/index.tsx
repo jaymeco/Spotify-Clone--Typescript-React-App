@@ -9,6 +9,7 @@ interface IProps {
   album_year: string;
   tracks: number;
   total_time: number;
+  artist_id: string;
 }
 
 export default function Banner(
@@ -20,6 +21,7 @@ export default function Banner(
     album_year,
     tracks,
     total_time,
+    artist_id,
   }: IProps) {
   return (
     <div className="album-banner">
@@ -32,8 +34,9 @@ export default function Banner(
             alt={`Artist - ${artist_name}`}
           />
           <p>
-            <Link to="/artist">{artist_name}</Link>
-            • {album_year} • {tracks} músicas, 1h 40min</p>
+            <Link to={`/artist/${artist_id}`}>{artist_name} </Link>
+            • {album_year} • {tracks} músicas, 1h 40min
+          </p>
         </div>
       </div>
       <img

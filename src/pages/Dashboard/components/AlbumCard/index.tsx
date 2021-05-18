@@ -5,11 +5,12 @@ interface IProps {
   album_image: string;
   album_name: string;
   album_year: string;
+  album_id: string;
 }
 
-export default function AlbumCard({ album_image, album_name, album_year }: IProps) {
+export default function AlbumCard({ album_image, album_name, album_year, album_id }: IProps) {
   return (
-    <Link className="album-card" to="/album">
+    <Link className="album-card" to={`/album/${album_id}`}>
       <img
         src={album_image}
         alt={`Album - ${album_name}`}

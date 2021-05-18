@@ -79,7 +79,11 @@
 .track-list li div{
   width: 90%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+}
+
+.track-list li div p {
+  margin: 0rem .5rem;
 }
 
 .track-list li {
