@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../../../services/api';
+import { Loading } from '../../components/Loading';
 import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
@@ -39,10 +40,10 @@ interface IArtist {
 
 export default function ViewAlbum() {
   const params = useParams<{id: string}>();
-  const [state, setState] = useState([])
   const [artist, setArtist] = useState<IArtist>();
   const [albums, setAlbums] = useState<IAlbum[]>();
   const [album, setAlbum] = useState<IAlbum>();
+  const [isLoading, setIsloading] = useState(true);
 
   useEffect(()=> {
     async function getData(){
@@ -53,12 +54,15 @@ export default function ViewAlbum() {
         setAlbums(data.some_albums.items);
         setArtist(data.artist);
         setAlbum(data.album);
+        setIsloading(false);
       } catch (error) {
         console.log(error.response);
       }
     }
     getData()
-  }, [params])
+  }, [params]);
+  
+  if(isLoading) return <Loading/>
   return (
     <>
       <Header />
