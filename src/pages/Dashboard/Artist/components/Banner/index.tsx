@@ -1,14 +1,29 @@
 import './style.css';
 
-export default function Banner() {
+interface IFollowers {
+  total: number;
+}
+
+interface IImages {
+  url: string;
+}
+
+interface IData {
+  id: string;
+  followers: IFollowers;
+  name: string;
+  images: IImages[];
+}
+
+export default function Banner(artist: IData) {
   return (
     <div className="artist-banner">
       <img
-        src="https://i.scdn.co/image/6dc0be659ea462b84b9b6485bc20db8dffaa48e2"
-        alt={`Artist - `}
+        src={artist.images[0].url}
+        alt={`Artist - ${artist.name}`}
       />
-      <h1>Iron Maiden</h1>
-      <p>6.248.616 ouvintes mensais</p>
+      <h1>{artist.name}</h1>
+      <p>{artist.followers.total} ouvintes mensais</p>
     </div>
   );
 }
