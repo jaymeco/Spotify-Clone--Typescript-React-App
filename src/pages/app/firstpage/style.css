@@ -1,0 +1,28 @@
+.first-page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.first-page-container a {
+  width: 20vw;
+  height: 8vh;
+  border: none;
+  outline: none;
+  background-color: #1DB954;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.5rem;
+  transition: ease-in-out .3s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.first-page-container a:hover {
+  cursor: pointer;
+  background-color: #17e25e;
+}
