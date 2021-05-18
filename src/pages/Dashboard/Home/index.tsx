@@ -1,22 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { api } from '../../../services/api';
 import Header from '../components/Header';
 import InitialCard from '../components/InitialCard';
 import './style.css';
 
-export default function Home() {
-  const [state, setState] = useState([
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10
-  ])
+interface IArtists {
+  name: string;
+  id: string;
+}
 
+interface IImages {
+  url: string;
+}
+
+interface IItems {
+  id: string;
+  artists: IArtists[];
+  name: string;
+  release_date: string;
+  images: IImages[];
+}
+
+export default function Home() {
+  const [state, setState] = useState([]);
+  useEffect(()=> {
+    async function Data() {
+      try {
+        const { data } = await api.get('/albums/new-realeses');
+        console.log(data?.albums.items);
+        setState(data?.albums.items);
+      } catch (error) {
+        console.log(error);
+      }
+
+    }
+    Data();
+  }, [])
   return (
     <>
       <Header />
@@ -24,13 +43,15 @@ export default function Home() {
         <h2>Álbuns recém lançados</h2>
         <div className="container-row">
           {
-            state.map(item=>(
+            state.map((album: IItems)=>(
               <InitialCard
-                key={item}
-                album_name="Nights of the Dead, Legacy of the Beast: Live in Mexico City"
-                album_url="https://i.scdn.co/image/ab67616d00001e023dd751909cadeef54302b0d8"
-                album_year="2020"
-                artist="Iron Maiden"
+                key={album.id}
+                artist_id={album.artists[0].id}
+                album_id={album.id}
+                album_name={album.name}
+                album_url={album.images[0].url}
+                album_year={album.release_date}
+                artist={album.artists[0].name}
               />
             ))
           }

@@ -7,11 +7,13 @@ interface IProps {
   album_name: string;
   album_year: string;
   artist: string;
+  artist_id: string;
+  album_id: string;
 }
 
-export default function InitialCard({ album_name, album_url, album_year, artist }: IProps) {
+export default function InitialCard({ album_name, album_url, album_year, artist, artist_id, album_id }: IProps) {
   return (
-    <Link to="/album" className="initial-card-group" >
+    <Link to={`/album/${album_id}`} className="initial-card-group" >
       <div className="card-img-group">
         <img src={album_url}
           alt={`Album ${album_name}`}
@@ -22,7 +24,7 @@ export default function InitialCard({ album_name, album_url, album_year, artist 
       </div>
       <div className="card-content">
         <h4>{album_name}</h4>
-        <p><Link to="/artist">{artist}</Link> • {album_year}</p>
+        <p><Link to={`/artist/${artist_id}`}>{artist}</Link> • {album_year}</p>
       </div>
     </Link>
   )
