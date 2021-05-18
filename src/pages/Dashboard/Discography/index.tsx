@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../../../services/api";
+import { Loading } from "../../components/Loading";
 import AlbumCard from "../components/AlbumCard";
 import Header from "../components/Header";
 import './style.css';
@@ -20,6 +21,7 @@ export default function Discography() {
   const params = useParams<{id: string}>();
   const [state, setState] = useState([])
   const [artist, setArtist] = useState({})
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(()=> {
     async function getDate() {
@@ -28,9 +30,9 @@ export default function Discography() {
 
         const { data } = await api.get(`/artists/albums/${id}`);
 
-        console.log(data);
         setState(data.items);
-        setArtist(data.items[0]?.artists[0])
+        setArtist(data.items[0]?.artists[0]);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -38,6 +40,7 @@ export default function Discography() {
     getDate();
   }, [])
 
+  if(isLoading) return <Loading/>
   return (
     <>
       <Header />
