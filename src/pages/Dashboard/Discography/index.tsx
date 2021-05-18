@@ -17,10 +17,14 @@ interface IAlbum {
   release_date?: string;
   id?: string;
 }
+interface IArtist {
+  name: string;
+  id: string;
+}
 export default function Discography() {
   const params = useParams<{id: string}>();
   const [state, setState] = useState([])
-  const [artist, setArtist] = useState({})
+  const [artist, setArtist] = useState<IArtist>()
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(()=> {
@@ -47,9 +51,9 @@ export default function Discography() {
       <div className="discography-header">
         <img
           src={''}
-          alt={`Artist - `}
+          alt={`Artist - ${artist?.name}`}
         />
-        <Link to="/artist">Iron Maiden</Link>
+        <Link to={`/artist/${artist?.id}`}>{artist?.name}</Link>
       </div>
       <div className="discography-container">
         <div className="discography-row">
