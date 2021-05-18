@@ -24,7 +24,7 @@ export default function InitialCard({ album_name, album_url, album_year, artist,
       </div>
       <div className="card-content">
         <h4>{album_name}</h4>
-        <p><Link to={`/artist/${artist_id}`}>{artist}</Link> • {album_year}</p>
+        <p><Link to={`/artist/${artist_id}`}>{artist}</Link> • {new Date(album_year).getFullYear().toString()}</p>
       </div>
     </Link>
   )
