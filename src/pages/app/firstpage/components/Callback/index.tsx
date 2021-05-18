@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useHistory } from 'react-router-dom';
+import { Loading } from "../../../../components/Loading";
 import { useAuth } from "./UseAuth";
 
 interface Iprops {
@@ -24,7 +25,7 @@ export function Callback({ code }: Iprops ) {
   }, [accesstoken])
   return (
     <>
-      <h1 style={{ color: '#fff' }}>Redirecionando...</h1>
+      <Loading/>
     </>
   )
 }
