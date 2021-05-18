@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../../../services/api';
+import { Loading } from '../../components/Loading';
 import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import Banner from './components/Banner';
@@ -41,7 +42,7 @@ export default function Artist() {
   const [state, setState] = useState([]);
   const [artist, setArtist] = useState<IData>();
   const [someAlbums, setSomeAlbums] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(()=> {
     async function getData() {
       try {
@@ -49,10 +50,10 @@ export default function Artist() {
         
         const { data } = await api.get(`/artists/${id}`);
 
-        console.log(data.some_albums);
         setArtist(data.artist)
         setState(data.top_track?.tracks)
         setSomeAlbums(data.some_albums?.items);
+        setIsLoading(false);
       } catch (error) {
         console.log(error.response);
       }
@@ -60,7 +61,7 @@ export default function Artist() {
     }
     getData();
   }, [params])
-
+  if(isLoading) return <Loading/>;
   return (
     <>
       <Header />
