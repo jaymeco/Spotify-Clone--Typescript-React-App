@@ -20,6 +20,7 @@ interface IAlbum {
 interface IArtist {
   name: string;
   id: string;
+  images: IImages[];
 }
 export default function Discography() {
   const params = useParams<{id: string}>();
@@ -34,8 +35,8 @@ export default function Discography() {
 
         const { data } = await api.get(`/artists/albums/${id}`);
 
-        setState(data.items);
-        setArtist(data.items[0]?.artists[0]);
+        setState(data.albums.items);
+        setArtist(data.artist);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -50,7 +51,7 @@ export default function Discography() {
       <Header />
       <div className="discography-header">
         <img
-          src={''}
+          src={artist?.images[0].url}
           alt={`Artist - ${artist?.name}`}
         />
         <Link to={`/artist/${artist?.id}`}>{artist?.name}</Link>

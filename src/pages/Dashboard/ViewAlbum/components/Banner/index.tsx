@@ -23,6 +23,14 @@ export default function Banner(
     total_time,
     artist_id,
   }: IProps) {
+
+  const millisToHoursAndMinutes = (millis: number) => {
+    const minutes = Math.floor((millis / 1000 / 60) % 60);
+    const hours = Math.floor((millis / 1000 / 3600) % 24);
+
+    return `${hours}h ${minutes}min`
+  }
+
   return (
     <div className="album-banner">
       <div className="banner-info">
@@ -35,7 +43,7 @@ export default function Banner(
           />
           <p>
             <Link to={`/artist/${artist_id}`}>{artist_name} </Link>
-            • {album_year} • {tracks} músicas, 1h 40min
+            • {album_year} • {tracks} músicas, {millisToHoursAndMinutes(total_time)}
           </p>
         </div>
       </div>

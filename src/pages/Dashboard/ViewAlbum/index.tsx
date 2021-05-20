@@ -39,17 +39,17 @@ interface IArtist {
 }
 
 export default function ViewAlbum() {
-  const params = useParams<{id: string}>();
+  const params = useParams<{ id: string }>();
   const [artist, setArtist] = useState<IArtist>();
   const [albums, setAlbums] = useState<IAlbum[]>();
   const [album, setAlbum] = useState<IAlbum>();
   const [isLoading, setIsloading] = useState(true);
 
-  useEffect(()=> {
-    async function getData(){
+  useEffect(() => {
+    async function getData() {
       try {
         const { id } = params;
-        const {data} = await api.get(`/album/${id}`);
+        const { data } = await api.get(`/album/${id}`);
 
         setAlbums(data.some_albums.items);
         setArtist(data.artist);
@@ -61,8 +61,24 @@ export default function ViewAlbum() {
     }
     getData()
   }, [params]);
-  
-  if(isLoading) return <Loading/>
+
+  function getTotalTime() {
+    let ms = 0;
+    album?.tracks.items.map(track => {
+      ms += track.duration_ms
+    });
+
+    return ms;
+  }
+
+  const millisToMinutesAndSeconds = (millis: number) => {
+    let minutes = Math.floor(millis / 60000);
+    let seconds = ((millis % 60000) / 1000).toFixed(0);
+
+    return `${minutes}:${(Number(seconds) < 10 ? "0" : "")}${seconds}`;
+  }
+
+  if (isLoading) return <Loading />
   return (
     <>
       <Header />
@@ -75,12 +91,11 @@ export default function ViewAlbum() {
           album_year={new Date(album?.release_date as string).getFullYear().toString()}
           album_image={album?.images[0].url as string}
           tracks={album?.total_tracks as number}
-          total_time={2000000}
+          total_time={getTotalTime()}
         />
         <div className="tracks-others-container">
           <div className="album-track-container">
             <div className="search-menu">
-              {/* <SearchBar /> */}
               <div className="btn-container">
                 <button type="button" className="btn-first">Disco 1</button>
                 {/* <button type="button" className="btn-middle">Disco 2</button> */}
@@ -99,7 +114,7 @@ export default function ViewAlbum() {
                       <p>{index + 1}</p>
                       <p>{track.name}</p>
                     </div>
-                    <p>{track.duration_ms}</p>
+                    <p>{millisToMinutesAndSeconds(track.duration_ms)}</p>
                   </li>
                 ))
               }
@@ -112,7 +127,7 @@ export default function ViewAlbum() {
             </div>
             <div className="others-container-row">
               {
-                albums?.map(album=>(
+                albums?.map(album => (
                   <AlbumCard
                     album_id={album.id as string}
                     key={album.id}

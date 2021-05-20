@@ -33,21 +33,21 @@ interface ITrack {
   album: IAlbum;
   id: string;
   name: string;
-  duration_ms: number; 
+  duration_ms: number;
 }
 
 export default function Artist() {
-  const params = useParams<{id: string}>();
+  const params = useParams<{ id: string }>();
 
   const [state, setState] = useState([]);
   const [artist, setArtist] = useState<IData>();
   const [someAlbums, setSomeAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(()=> {
+  useEffect(() => {
     async function getData() {
       try {
         const { id } = params;
-        
+
         const { data } = await api.get(`/artists/${id}`);
 
         setArtist(data.artist)
@@ -60,22 +60,30 @@ export default function Artist() {
 
     }
     getData();
-  }, [params])
-  if(isLoading) return <Loading/>;
+  }, [params]);
+
+  const millisToMinutesAndSeconds = (millis: number) => {
+    let minutes = Math.floor(millis / 60000);
+    let seconds = ((millis % 60000) / 1000).toFixed(0);
+    
+    return `${minutes}:${(Number(seconds) < 10 ? "0" : "")}${seconds}`;
+  }
+
+  if (isLoading) return <Loading />;
   return (
     <>
       <Header />
       <div className="artist-container">
         {
           artist ? (
-            <Banner  
+            <Banner
               id={artist?.id as string}
               name={artist?.name as string}
               images={artist?.images as IImages[]}
               followers={artist?.followers as IFollowers}
             />
 
-          ): null
+          ) : null
         }
         <div className="popular-others-container">
           <div className="popular-track-container">
@@ -92,7 +100,7 @@ export default function Artist() {
                       />
                       <p>{track.name}</p>
                     </div>
-                    <p>{track.duration_ms}</p>
+                    <p>{millisToMinutesAndSeconds(track.duration_ms)}</p>
                   </li>
                 ))
               }

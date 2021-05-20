@@ -16,6 +16,11 @@ interface IData {
 }
 
 export default function Banner(artist: IData) {
+
+  function formatNumber(number: string){
+    return number.replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, '$1.')
+  }
+
   return (
     <div className="artist-banner">
       <img
@@ -23,7 +28,7 @@ export default function Banner(artist: IData) {
         alt={`Artist - ${artist.name}`}
       />
       <h1>{artist.name}</h1>
-      <p>{artist.followers.total} ouvintes mensais</p>
+      <p>{formatNumber(String(artist.followers.total))} ouvintes mensais</p>
     </div>
   );
 }

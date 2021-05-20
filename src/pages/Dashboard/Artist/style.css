@@ -53,6 +53,12 @@
   align-items: center;
   padding: .3rem .3rem;
   border-bottom: 1px solid #c4c4c4;
+  transition: ease-in-out .3s;
+}
+
+.popular-track-list li:hover{
+  background-color: rgba(255, 255, 255, .2);
+  cursor: pointer;
 }
 
 .popular-track-list li div {
