@@ -21,16 +21,10 @@ export default function SearchCard({ artist, artist_id, id, image, year, type, n
         alt={`artista - ${artist}`}
       />
       <div className="content">
-        <div className="top">
-          <h2>{name}</h2>
-          <p>{total_tracks} músicas • 1h 40min</p>
-          <p>{year}</p>
-        </div>
-        <div className="bottom">
-          <Link to={`/artist/${artist_id}`}>{artist}</Link>
-          <div>
-            {type}
-          </div>
+        <div>
+          <h3 title={name}>{name || 'Nigths od th death, Legacy'}</h3>
+          <p>{total_tracks || 17} músicas • {year || 2020}</p>
+          <Link title={artist} to={`/artist/${artist_id}`}>{artist || 'iron Maiden'}</Link>
         </div>
       </div>
     </Link>

@@ -3,9 +3,44 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { Link, useHistory } from 'react-router-dom';
 import SearchBar from '../SearchBar';
 import './style.css';
+import { useCallback, useState } from 'react';
+import { api } from '../../../../services/api';
 
-export default function Header() {
+interface IProps {
+  setSearchData?([]): void
+}
+
+export default function Header({ setSearchData }: IProps) {
   const navigation = useHistory();
+  const [value, setValue] = useState('');
+  const [type, setType] = useState('album');
+
+  
+  const search = useCallback(()=>{
+    async function getSearchData() {
+      try {
+        console.log(type);
+        if(value === '') return;
+        const { data } = await api.post('/search', {
+          search: value,
+          type,
+        });
+        if(setSearchData){
+          if(data?.albums){
+            setSearchData(data?.albums.items);
+          }else if(data?.artists){
+            setSearchData(data?.artists.items);
+          } else if(data?.tracks){
+            setSearchData(data?.tracks.items);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getSearchData();
+  }, [value, type])
 
   return (
     <>
@@ -29,7 +64,13 @@ export default function Header() {
           </Link>
           {
             navigation.location.pathname === '/home'? (
-              <SearchBar />
+              <SearchBar
+                search={search}
+                type={type}
+                value={value}
+                setType={setType}
+                setValue={setValue}
+              />
             ): null
           }
         </div>

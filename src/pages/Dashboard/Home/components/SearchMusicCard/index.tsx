@@ -7,13 +7,9 @@ interface IProps {
   name?: string;
   artist?: string;
   artist_id?: string;
-  year?: number;
-  type?: string;
-  total_tracks?: number;
-  total_time?: number;
 }
 
-export default function SearchMusicCard({ artist, artist_id, id, image, year, type, name, total_tracks, total_time }: IProps) {
+export default function SearchMusicCard({ artist, artist_id, id, image, name }: IProps) {
   return (
     <Link to={`/album/${id}`} className="search-music-card-group">
       <img 

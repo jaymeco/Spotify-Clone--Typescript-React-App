@@ -80,7 +80,7 @@ export default function ViewAlbum() {
         <div className="tracks-others-container">
           <div className="album-track-container">
             <div className="search-menu">
-              <SearchBar />
+              {/* <SearchBar /> */}
               <div className="btn-container">
                 <button type="button" className="btn-first">Disco 1</button>
                 {/* <button type="button" className="btn-middle">Disco 2</button> */}

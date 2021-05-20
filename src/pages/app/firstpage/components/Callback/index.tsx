@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
+import { api } from "../../../../../services/api";
 import { Loading } from "../../../../components/Loading";
 import { useAuth } from "./UseAuth";
 
@@ -7,16 +8,19 @@ interface Iprops {
   code: string
 }
 
-export function Callback({ code }: Iprops ) {
+export function Callback({ code }: Iprops) {
 
   const accesstoken = useAuth(code);
-  const history = useHistory()
-  useEffect(()=> {
-    function setData(){
-      if(accesstoken){
+  const history = useHistory();
+
+  useEffect(() => {
+    function setData() {
+      if (accesstoken) {
+        api.defaults.headers['Authorization'] = accesstoken
         localStorage.setItem('token', accesstoken);
-        console.log(accesstoken);
-        history.push('/home');
+        if (localStorage.getItem('token') !== '') {
+          history.push('/home');
+        }
 
       }
     }
@@ -25,7 +29,7 @@ export function Callback({ code }: Iprops ) {
   }, [accesstoken])
   return (
     <>
-      <Loading/>
+      <Loading />
     </>
   )
 }

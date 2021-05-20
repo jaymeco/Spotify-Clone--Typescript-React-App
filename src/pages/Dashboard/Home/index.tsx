@@ -3,7 +3,9 @@ import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
 import Header from '../components/Header';
 import InitialCard from '../components/InitialCard';
+import SearchArtistCard from './components/SearchArtistCard';
 import SearchCard from './components/SearchCard';
+import SearchMusicCard from './components/SearchMusicCard';
 import './style.css';
 
 interface IArtists {
@@ -26,32 +28,78 @@ interface IItems {
 export default function Home() {
   const [state, setState] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchData, setSearchData] = useState<any[]>([]);
 
-  useEffect(()=> {
+  useEffect(() => {
     async function Data() {
       try {
         const { data } = await api.get('/albums/new-realeses');
-        
+
         setState(data?.albums.items);
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
       }
 
     }
     Data();
   }, [])
 
-  if(isLoading) return <Loading/>
+  if (isLoading) return <Loading />
   return (
     <>
-      <Header />
+      <Header
+        setSearchData={setSearchData}
+      />
       <div className="home-container">
-        <SearchCard/>
+        {
+          searchData.length ? (
+            <h2>Resultado da busca</h2>
+          ) : null
+        }
+        <div className="container-row">
+          {
+            searchData?.map(data => {
+              if (data.type === 'artist') {
+                return (
+                  <SearchArtistCard
+                    id={data.id}
+                    key={data.id}
+                    image={data.images[0]?.url}
+                    name={data.name}
+                  />
+                );
+              } else if (data.type === 'album') {
+                return (
+                  <SearchCard
+                    name={data?.name}
+                    type={data?.type}
+                    image={data?.images[0].url}
+                    total_tracks={data?.total_tracks || 0}
+                    artist={data?.artists[0].name}
+                    artist_id={data?.artists[0].id || data?.id}
+                    id={data?.id}
+                  />
+                );
+              } else if (data.type === 'track') {
+                return (
+                  <SearchMusicCard
+                    id={data.album.id}
+                    key={data.id}
+                    name={data.name}
+                    image={data.album.images[0].url}
+                    artist={data.artists[0].name}
+                    artist_id={data.artists[0].id}
+                  />
+                );
+              }
+            })
+          }
+        </div>
         <h2>Álbuns recém lançados</h2>
         <div className="container-row">
           {
-            state.map((album: IItems)=>(
+            state.map((album: IItems) => (
               <InitialCard
                 key={album.id}
                 artist_id={album.artists[0].id}
