@@ -83,12 +83,14 @@ export default function ViewAlbum() {
 
   function separeteDiscs(data: IAlbum) {
     let discsSum = 0;
+    let localDiscs:number[] = [];
     data?.tracks.items.map((track: ITrack) => {
       if (discsSum !== track.disc_number) {
-        discs.push(track.disc_number);
+        localDiscs.push(track.disc_number);
       }
       discsSum = track.disc_number;
-    })
+    });
+    setDiscs(localDiscs);
   }
 
   if (isLoading) return <Loading />
