@@ -12,6 +12,7 @@
   padding: .8rem 0rem;
   text-decoration: none;
   transition: ease-in-out .3s;
+  position: relative;
 }
 
 .search-artist-card-group:hover {
@@ -30,4 +31,24 @@
 .search-artist-card-group .content {
   padding: 0rem 1rem;
   color: #fff;
+}
+
+.delete-search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid #c4c4c4;
+  background-color: #585757;
+  transition: ease-in-out .3s;
+}
+
+.delete-search:hover {
+  background-color: #1db954;
+  cursor: pointer;
 }

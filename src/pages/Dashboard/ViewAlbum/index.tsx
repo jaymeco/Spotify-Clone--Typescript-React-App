@@ -4,7 +4,6 @@ import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
 import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
-import SearchBar from '../components/SearchBar';
 import Banner from './components/Banner';
 import './style.css';
 

@@ -1,3 +1,7 @@
+.card-container-group{
+  position: relative;
+}
+
 .search-card-group {
   width: 15vw;
   height: 40vh;

@@ -29,13 +29,17 @@ export default function Home() {
   const [state, setState] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchData, setSearchData] = useState<any[]>([]);
+  const [recentSearch, setRecentSearch] = useState<any[]>();
 
   useEffect(() => {
     async function Data() {
       try {
         const { data } = await api.get('/albums/new-realeses');
-
         setState(data?.albums.items);
+
+        if (localStorage.getItem('recenty_searched')) {
+          setRecentSearch(JSON.parse(localStorage.getItem('recenty_searched') as string));
+        }
         setIsLoading(false);
       } catch (error) {
         console.log(error.response);
@@ -43,7 +47,8 @@ export default function Home() {
 
     }
     Data();
-  }, [])
+  }, []);
+
 
   if (isLoading) return <Loading />
   return (
@@ -53,9 +58,57 @@ export default function Home() {
       />
       <div className="home-container">
         {
-          searchData.length ? (
+          (!searchData.length && recentSearch?.length)? (
+            <h2>Buscado recentemente</h2>
+          ): null
+        }
+        <div className="container-row">
+          {
+            (!searchData.length && recentSearch?.length) ?
+            recentSearch.map(items => {
+              if (items['album']) {
+                return (
+                  <SearchCard
+                    name={items['album'].name}
+                    type={items['album'].type}
+                    image={items['album'].image}
+                    total_tracks={items['album'].total_tracks}
+                    artist={items['album'].artist}
+                    artist_id={items['album'].artists_id}
+                    id={items['album'].id}
+                    setSearchData={setRecentSearch}
+                  />
+                );
+              } else if (items['artist']) {
+                return (
+                  <SearchArtistCard
+                    id={items['artist'].id}
+                    key={items['artist'].id}
+                    image={items['artist'].image}
+                    name={items['artist'].name}
+                    setSearchData={setRecentSearch}
+                  />
+                );
+              } else if (items['track']) {
+                return (
+                  <SearchMusicCard
+                    id={items['track'].id}
+                    key={items['track'].id}
+                    name={items['track'].name}
+                    image={items['track'].image}
+                    artist={items['track'].artist}
+                    artist_id={items['track'].artist_id}
+                    setSearchData={setRecentSearch}
+                  />
+                );
+              }
+            }): null
+          }
+        </div>
+        {
+          searchData.length? (
             <h2>Resultado da busca</h2>
-          ) : null
+          ): null
         }
         <div className="container-row">
           {
@@ -67,6 +120,7 @@ export default function Home() {
                     key={data.id}
                     image={data.images[0]?.url}
                     name={data.name}
+                    disable={true}
                   />
                 );
               } else if (data.type === 'album') {
@@ -79,6 +133,7 @@ export default function Home() {
                     artist={data?.artists[0].name}
                     artist_id={data?.artists[0].id || data?.id}
                     id={data?.id}
+                    disable={true}
                   />
                 );
               } else if (data.type === 'track') {
@@ -90,6 +145,7 @@ export default function Home() {
                     image={data.album.images[0].url}
                     artist={data.artists[0].name}
                     artist_id={data.artists[0].id}
+                    disable={true}
                   />
                 );
               }
