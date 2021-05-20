@@ -101,7 +101,7 @@
 }
 
 .active{
-  background-color: #17e25e;
+  background-color: #17e25e !important;
 }
 
 .track-list::-webkit-scrollbar {

@@ -44,6 +44,8 @@ export default function ViewAlbum() {
   const [albums, setAlbums] = useState<IAlbum[]>();
   const [album, setAlbum] = useState<IAlbum>();
   const [isLoading, setIsloading] = useState(true);
+  const [discs, setDiscs] = useState<number[]>([]);
+  const [currentDisc, setCurrentdisc] = useState(1);
 
   useEffect(() => {
     async function getData() {
@@ -54,6 +56,7 @@ export default function ViewAlbum() {
         setAlbums(data.some_albums.items);
         setArtist(data.artist);
         setAlbum(data.album);
+        separeteDiscs(data.album);
         setIsloading(false);
       } catch (error) {
         console.log(error.response);
@@ -78,6 +81,16 @@ export default function ViewAlbum() {
     return `${minutes}:${(Number(seconds) < 10 ? "0" : "")}${seconds}`;
   }
 
+  function separeteDiscs(data: IAlbum) {
+    let discsSum = 0;
+    data?.tracks.items.map((track: ITrack) => {
+      if (discsSum !== track.disc_number) {
+        discs.push(track.disc_number);
+      }
+      discsSum = track.disc_number;
+    })
+  }
+
   if (isLoading) return <Loading />
   return (
     <>
@@ -97,9 +110,32 @@ export default function ViewAlbum() {
           <div className="album-track-container">
             <div className="search-menu">
               <div className="btn-container">
-                <button type="button" className="btn-first">Disco 1</button>
-                {/* <button type="button" className="btn-middle">Disco 2</button> */}
-                <button type="button" className="btn-last">Disco 2</button>
+                {
+                  discs.map((number, index) => {
+                    if (index + 1 === 1) {
+                      return (
+                        <button type="button"
+                          onClick={() => setCurrentdisc(index + 1)}
+                          className={`btn-first ${currentDisc === index+1? 'active': ''}`}
+                        >Disco {index + 1}</button>
+                      )
+                    } else if (index + 1 !== discs.length) {
+                      return (
+                        <button type="button"
+                          onClick={() => setCurrentdisc(index + 1)}
+                          className={`btn-middle ${currentDisc === index+1? 'active': ''}`}
+                        >Disco {index + 1}</button>
+                      );
+                    } else {
+                      return (
+                        <button type="button"
+                          onClick={() => setCurrentdisc(index + 1)}
+                          className={`btn-last ${currentDisc === index+1? 'active': ''}`}
+                        >Disco {index + 1}</button>
+                      );
+                    }
+                  })
+                }
               </div>
             </div>
             <div className="track-header">
@@ -108,15 +144,19 @@ export default function ViewAlbum() {
             </div>
             <ul className="track-list">
               {
-                album?.tracks.items.map((track, index) => (
-                  <li key={track.id}>
-                    <div>
-                      <p>{index + 1}</p>
-                      <p>{track.name}</p>
-                    </div>
-                    <p>{millisToMinutesAndSeconds(track.duration_ms)}</p>
-                  </li>
-                ))
+                album?.tracks.items.map((track, index) => {
+                  if (track.disc_number === currentDisc) {
+                    return (
+                      <li key={track.id}>
+                        <div>
+                          <p>{index + 1}</p>
+                          <p>{track.name}</p>
+                        </div>
+                        <p>{millisToMinutesAndSeconds(track.duration_ms)}</p>
+                      </li>
+                    );
+                  }
+                })
               }
             </ul>
           </div>
