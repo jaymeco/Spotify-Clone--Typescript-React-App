@@ -113,6 +113,27 @@
   border-radius: 20px;
 }
 
+.track-list li .btn-player {
+  display: none;
+}
+
+.track-list li:hover .btn-player, .is-playing-img {
+  display: block;
+}
+
+.track-list li:hover .is-playing-img {
+  display: none;
+}
+
+.track-list li .is-playing-img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.track-list li:hover .track-index {
+  display: none;
+}
+
 /* -------- Others albumn ------ */
 
 .others-albums {

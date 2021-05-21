@@ -6,6 +6,7 @@ import InitialCard from '../components/InitialCard';
 import SearchArtistCard from './components/SearchArtistCard';
 import SearchCard from './components/SearchCard';
 import SearchMusicCard from './components/SearchMusicCard';
+import SpotifyPlayback from 'react-spotify-web-playback';
 import './style.css';
 
 interface IArtists {
@@ -34,9 +35,10 @@ export default function Home() {
   useEffect(() => {
     async function Data() {
       try {
+        api.defaults.headers['Authorization'] = localStorage.getItem('token')
         const { data } = await api.get('/albums/new-realeses');
         setState(data?.albums.items);
-
+        // console.log(data?.albums.items);
         if (localStorage.getItem('recenty_searched')) {
           setRecentSearch(JSON.parse(localStorage.getItem('recenty_searched') as string));
         }
@@ -74,7 +76,7 @@ export default function Home() {
                     image={items['album'].image}
                     total_tracks={items['album'].total_tracks}
                     artist={items['album'].artist}
-                    artist_id={items['album'].artists_id}
+                    artist_id={items['album'].artist_id}
                     id={items['album'].id}
                     setSearchData={setRecentSearch}
                   />
@@ -152,7 +154,7 @@ export default function Home() {
             })
           }
         </div>
-        <h2>Álbuns recém lançados</h2>
+        <h2>Álbuns recém lançados</h2>        
         <div className="container-row">
           {
             state.map((album: IItems) => (

@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
+import { usePlayerContext } from '../../Contexts/player';
 import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import Banner from './components/Banner';
 import './style.css';
+import { IoIosPlay, IoIosPause } from 'react-icons/io';
 
 interface IImages {
   url: string;
@@ -16,6 +18,7 @@ interface ITrack {
   name: string;
   duration_ms: number;
   disc_number: number;
+  preview_url: string;
 }
 
 interface ITracks {
@@ -45,13 +48,14 @@ export default function ViewAlbum() {
   const [isLoading, setIsloading] = useState(true);
   const [discs, setDiscs] = useState<number[]>([]);
   const [currentDisc, setCurrentdisc] = useState(1);
+  const { setTrack, isPlaying, track, setIsPlaying, play, stop, setInfoTrack } = usePlayerContext();
 
   useEffect(() => {
     async function getData() {
       try {
+        api.defaults.headers['Authorization'] = localStorage.getItem('token')
         const { id } = params;
         const { data } = await api.get(`/album/${id}`);
-
         setAlbums(data.some_albums.items);
         setArtist(data.artist);
         setAlbum(data.album);
@@ -82,7 +86,7 @@ export default function ViewAlbum() {
 
   function separeteDiscs(data: IAlbum) {
     let discsSum = 0;
-    let localDiscs:number[] = [];
+    let localDiscs: number[] = [];
     data?.tracks.items.map((track: ITrack) => {
       if (discsSum !== track.disc_number) {
         localDiscs.push(track.disc_number);
@@ -90,6 +94,26 @@ export default function ViewAlbum() {
       discsSum = track.disc_number;
     });
     setDiscs(localDiscs);
+  }
+
+  async function playOrStop(Itrack: ITrack) {
+    console.log(Itrack);
+    if (Itrack?.preview_url) {
+      if (isPlaying && Itrack?.preview_url === track) {
+        setIsPlaying(false);
+        stop();
+      } else {
+        stop();
+        setInfoTrack(
+          Object.assign(Itrack, {album: album})
+        );
+        setTrack(Itrack?.preview_url);
+        await play();
+        setIsPlaying(true);
+      }
+    } else {
+      alert('Está musica não possui uma demo :(');
+    }
   }
 
   if (isLoading) return <Loading />
@@ -117,21 +141,21 @@ export default function ViewAlbum() {
                       return (
                         <button type="button"
                           onClick={() => setCurrentdisc(index + 1)}
-                          className={`btn-first ${currentDisc === index+1? 'active': ''}`}
+                          className={`btn-first ${currentDisc === index + 1 ? 'active' : ''}`}
                         >Disco {index + 1}</button>
                       )
                     } else if (index + 1 !== discs.length) {
                       return (
                         <button type="button"
                           onClick={() => setCurrentdisc(index + 1)}
-                          className={`btn-middle ${currentDisc === index+1? 'active': ''}`}
+                          className={`btn-middle ${currentDisc === index + 1 ? 'active' : ''}`}
                         >Disco {index + 1}</button>
                       );
                     } else {
                       return (
                         <button type="button"
                           onClick={() => setCurrentdisc(index + 1)}
-                          className={`btn-last ${currentDisc === index+1? 'active': ''}`}
+                          className={`btn-last ${currentDisc === index + 1 ? 'active' : ''}`}
                         >Disco {index + 1}</button>
                       );
                     }
@@ -145,15 +169,48 @@ export default function ViewAlbum() {
             </div>
             <ul className="track-list">
               {
-                album?.tracks.items.map((track, index) => {
-                  if (track.disc_number === currentDisc) {
+                album?.tracks.items.map((item, index) => {
+                  if (item.disc_number === currentDisc) {
                     return (
-                      <li key={track.id}>
+                      <li
+                        onClick={() => playOrStop(item)}
+                        key={item.id}
+                      >
                         <div>
-                          <p>{index + 1}</p>
-                          <p>{track.name}</p>
+                          {
+                            isPlaying && item?.preview_url === track ? (
+                              <IoIosPause
+                                className="btn-player"
+                                onClick={() => playOrStop(item)}
+                                size={25} color="#fff"
+                              />
+                            ) : (
+                              <IoIosPlay
+                                className="btn-player"
+                                onClick={() => playOrStop(item)}
+                                size={25} color="#fff"
+                              />
+                            )
+                          }
+                          {
+                            (isPlaying && item?.preview_url === track) ? (
+                              <img
+                                className="is-playing-img"
+                                src="https://open.scdn.co/cdn/images/equaliser-animated-green.73b73928.gif"
+                                alt="Is playing gif"
+                              />
+                            ) : (
+                              <p className="track-index">{index + 1}</p>
+                            )
+                          }
+                          {/* <p>{index + 1}</p> */}
+                          <p
+                            style={{ color: `${item?.preview_url === track? '#1DB954': '#fff'}` }}
+                          >
+                            {item.name}
+                          </p>
                         </div>
-                        <p>{millisToMinutesAndSeconds(track.duration_ms)}</p>
+                        <p>{millisToMinutesAndSeconds(item.duration_ms)}</p>
                       </li>
                     );
                   }

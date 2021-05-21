@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { api } from "../../../../../services/api";
+// import SpotifyWebApi from 'spotify-web-api-node';
 
 export function useAuth(code: string){
   const history = useHistory();
@@ -21,7 +21,6 @@ export function useAuth(code: string){
         setAccessToken(data?.access_token);
         setRefreshToken(data?.refresh_token);
         setExpiresIn(data?.expires_in);
-        // window.history.pushState({}, 'code', '/');
       } catch (error) {
         console.log(error.response.data?.message);
         console.log(error.response.data?.body);

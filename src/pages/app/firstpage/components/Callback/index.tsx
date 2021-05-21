@@ -16,8 +16,8 @@ export function Callback({ code }: Iprops) {
   useEffect(() => {
     function setData() {
       if (accesstoken) {
-        api.defaults.headers['Authorization'] = accesstoken
         localStorage.setItem('token', accesstoken);
+        api.defaults.headers['Authorization'] = accesstoken
         if (localStorage.getItem('token') !== '') {
           history.push('/home');
         }

@@ -74,3 +74,24 @@
   height: 3rem;
   margin: 0rem .5rem;
 }
+
+.btn-player {
+  display: none;
+}
+
+.popular-track-list li:hover .btn-player, .is-playing-img {
+  display: block;
+}
+
+.popular-track-list li:hover .is-playing-img {
+  display: none;
+}
+
+.popular-track-list li .is-playing-img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.popular-track-list li:hover .track-index {
+  display: none;
+}

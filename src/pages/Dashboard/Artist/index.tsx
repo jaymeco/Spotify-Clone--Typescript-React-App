@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
+import { usePlayerContext } from '../../Contexts/player';
 import AlbumCard from '../components/AlbumCard';
 import Header from '../components/Header';
 import Banner from './components/Banner';
+import { IoIosPlay, IoIosPause } from 'react-icons/io';
 import './style.css';
 
 interface IFollowers {
@@ -34,6 +36,7 @@ interface ITrack {
   id: string;
   name: string;
   duration_ms: number;
+  preview_url?: string;
 }
 
 export default function Artist() {
@@ -43,6 +46,8 @@ export default function Artist() {
   const [artist, setArtist] = useState<IData>();
   const [someAlbums, setSomeAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { setTrack, isPlaying, track, setIsPlaying, play, stop, setInfoTrack } = usePlayerContext();
+
   useEffect(() => {
     async function getData() {
       try {
@@ -65,8 +70,25 @@ export default function Artist() {
   const millisToMinutesAndSeconds = (millis: number) => {
     let minutes = Math.floor(millis / 60000);
     let seconds = ((millis % 60000) / 1000).toFixed(0);
-    
+
     return `${minutes}:${(Number(seconds) < 10 ? "0" : "")}${seconds}`;
+  }
+
+  async function playOrStop(Itrack: ITrack) {
+    if (Itrack?.preview_url) {
+      if (isPlaying && Itrack?.preview_url === track) {
+        setIsPlaying(false);
+        stop();
+      } else {
+        stop();
+        setInfoTrack(Itrack);
+        setTrack(Itrack?.preview_url);
+        await play();
+        setIsPlaying(true);
+      }
+    } else {
+      alert('Está musica não possui uma demo :(');
+    }
   }
 
   if (isLoading) return <Loading />;
@@ -90,17 +112,48 @@ export default function Artist() {
             <h1>Músicas Populares</h1>
             <ul className="popular-track-list">
               {
-                state.map((track: ITrack, index) => (
-                  <li key={track.id}>
+                state.map((item: ITrack, index) => (
+                  <li
+                    key={item.id} onClick={() => playOrStop(item)}
+                  >
                     <div>
-                      <p>{index + 1}</p>
+                      {
+                        isPlaying &&  item?.preview_url === track ? (
+                          <IoIosPause
+                            className="btn-player"
+                            onClick={() => playOrStop(item)}
+                            size={25} color="#fff"
+                          />
+                        ) : (
+                          <IoIosPlay
+                            className="btn-player"
+                            onClick={() => playOrStop(item)}
+                            size={25} color="#fff"
+                          />
+                        )
+                      }
+                      {
+                        (isPlaying && item?.preview_url === track)? (
+                          <img 
+                            className="is-playing-img"
+                            src="https://open.scdn.co/cdn/images/equaliser-animated-green.73b73928.gif" 
+                            alt="Is playing gif"
+                          />
+                        ): (
+                          <p className="track-index">{index + 1}</p>
+                        )
+                      }
                       <img
-                        src={track.album.images[0].url}
-                        alt={`Album - ${track.album.name}`}
+                        src={item.album.images[0].url}
+                        alt={`Album - ${item.album.name}`}
                       />
-                      <p>{track.name}</p>
+                      <p 
+                        style={{ color: `${item.preview_url === track ? '#1DB954' : '#fff'}` }}
+                      >
+                        {item.name}
+                      </p>
                     </div>
-                    <p>{millisToMinutesAndSeconds(track.duration_ms)}</p>
+                    <p>{millisToMinutesAndSeconds(item.duration_ms)}</p>
                   </li>
                 ))
               }
