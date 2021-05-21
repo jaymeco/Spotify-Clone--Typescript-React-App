@@ -43,3 +43,16 @@
   background-color: #17e25e;
   cursor: pointer;
 }
+
+@media screen and (max-width: 414px) {
+  .main-header{
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .main-header div .logo-container{
+    width: 100%;
+    flex-direction: row;
+  }
+}

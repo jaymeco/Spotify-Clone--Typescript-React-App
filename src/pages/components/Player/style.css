@@ -1,6 +1,4 @@
 #player-container {
-  width: 30vw;
-  height: 15vh;
   z-index: 1;
   position: absolute;
   bottom: 5px;
@@ -92,6 +90,32 @@
   transition: ease-in-out .3s;
 }
 
+.collapse-true {
+  width: 10vw;
+  height: 12vh;
+}
+
+.collapse-false {
+  width: 30vw;
+  height: 15vh;
+}
+
 #collapse-btn:hover{
   cursor: pointer;
+}
+.default {
+  width: 30vw;
+  height: 15vh;
+}
+
+@media screen and (max-width: 414px) {
+  .collapse-false {
+    width: 90vw !important;
+    height: 12vh !important;
+  }
+  
+  .collapse-true {
+    width: 31vw !important;
+    height: 12vh !important;
+  }
 }

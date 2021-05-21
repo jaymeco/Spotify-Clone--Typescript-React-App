@@ -66,3 +66,9 @@
   color: #1DB954;
   cursor: pointer;
 }
+
+@media screen and (max-width: 414px) {
+  .search-music-card-group{
+    width: 60vw;
+  }
+}

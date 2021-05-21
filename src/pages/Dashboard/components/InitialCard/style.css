@@ -79,3 +79,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@media screen and (max-width: 414px) {
+  .initial-card-group{
+    width: 60vw;
+  }
+}

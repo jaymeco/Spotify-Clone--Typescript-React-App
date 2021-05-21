@@ -103,3 +103,12 @@
 .show {
   display: unset !important;
 }
+
+@media screen and (max-width: 414px) {
+  .select-search .select-box {
+    width: 25vw;
+  }
+  .select-search .options-list {
+    width: 25vw;
+  }
+}

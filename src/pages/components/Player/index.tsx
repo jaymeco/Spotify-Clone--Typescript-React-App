@@ -33,15 +33,11 @@ export default function Player({
       if (!isCollapse) {
         playPauseBtn.style.display = 'none';
         infoTrack.style.display = 'none';
-        playerContainer.style.width = '10vw';
-        playerContainer.style.height = '12vh';
         collapseBtn.style.transform = 'rotate(180deg)';
         setIsCollapse(true);
       } else {
         playPauseBtn.style.display = 'flex';
         infoTrack.style.display = 'block';
-        playerContainer.style.width = '30vw';
-        playerContainer.style.height = '15vh';
         collapseBtn.style.transform = 'rotate(0deg)';
         setIsCollapse(false);
       }
@@ -49,7 +45,10 @@ export default function Player({
   }
 
   return (
-    <div id="player-container">
+    <div id="player-container" className={
+      `${!isCollapse? 'collapse-false': 'collapse-true'}`
+      
+    }>
       {track ? (
         <>
 

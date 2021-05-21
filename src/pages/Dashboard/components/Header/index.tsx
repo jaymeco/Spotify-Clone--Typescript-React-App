@@ -14,29 +14,29 @@ export default function Header({ setSearchData }: IProps) {
   const navigation = useHistory();
   const [value, setValue] = useState('');
   const [type, setType] = useState('album');
-  
-  const search = useCallback(()=>{
+
+  const search = useCallback(() => {
     async function getSearchData() {
       try {
         api.defaults.headers['Authorization'] = localStorage.getItem('token');
 
-        if(value === '') return;
+        if (value === '') return;
         const { data } = await api.post('/search', {
           search: value,
           type,
         });
 
-        if(setSearchData){
-          if(data?.albums){
+        if (setSearchData) {
+          if (data?.albums) {
             setSearchData(data?.albums.items);
-          }else if(data?.artists){
+          } else if (data?.artists) {
             setSearchData(data?.artists.items);
-          } else if(data?.tracks){
+          } else if (data?.tracks) {
             setSearchData(data?.tracks.items);
           }
         }
       } catch (error) {
-        if(error.response?.body?.error.message === 'The access token expired'){
+        if (error.response?.body?.error.message === 'The access token expired') {
           navigation.push('/');
         }
       }
@@ -47,36 +47,36 @@ export default function Header({ setSearchData }: IProps) {
 
   return (
     <>
-      <header 
+      <header
         className={`main-header 
-        ${navigation.location.pathname !== '/home'? 'hide': ''}`}
+        ${navigation.location.pathname !== '/home' ? 'hide' : ''}`}
       >
-        <div>
+        <div className="logo-container">
           {
-            navigation.location.pathname !== '/home'? (
-              <button 
-                onClick={()=>navigation.goBack()}
+            navigation.location.pathname !== '/home' ? (
+              <button
+                onClick={() => navigation.goBack()}
                 className="back-button"
               >
                 <IoIosArrowBack size={20} color="#fff" />
               </button>
-            ): null
+            ) : null
           }
           <Link to="/home">
             <img src={logo} alt="Logo Spotify" />
           </Link>
-          {
-            navigation.location.pathname === '/home'? (
-              <SearchBar
-                search={search}
-                type={type}
-                value={value}
-                setType={setType}
-                setValue={setValue}
-              />
-            ): null
-          }
         </div>
+        {
+          navigation.location.pathname === '/home' ? (
+            <SearchBar
+              search={search}
+              type={type}
+              value={value}
+              setType={setType}
+              setValue={setValue}
+            />
+          ) : null
+        }
       </header>
     </>
   );

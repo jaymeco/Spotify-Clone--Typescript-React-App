@@ -65,3 +65,16 @@
   width: 15rem;
   height: 15rem;
 }
+
+@media screen and (max-width: 414px) {
+  .discography-container {
+    height: 200%;
+    padding-bottom: 5rem;
+    
+  }
+  .discography-row{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

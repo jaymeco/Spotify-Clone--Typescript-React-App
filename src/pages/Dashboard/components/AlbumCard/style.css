@@ -41,3 +41,10 @@
 .album-card:hover .content{
   opacity: 1;
 }
+
+@media screen and (max-width: 414px) {
+  .album-card img {
+    width: 20rem;
+    height: 20rem;
+  }
+}

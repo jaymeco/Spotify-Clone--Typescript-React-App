@@ -52,3 +52,9 @@
   background-color: #1db954;
   cursor: pointer;
 }
+
+@media screen and (max-width: 414px) {
+  .search-artist-card-group{
+    width: 60vw;
+  }
+}

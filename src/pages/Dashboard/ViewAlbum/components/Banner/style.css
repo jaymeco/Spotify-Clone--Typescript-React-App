@@ -45,3 +45,12 @@
   width: 100%;
   height: 73%;
 }
+
+@media screen and (max-width: 414px) {
+
+  .album-banner {
+    width: 100%;
+    height: 80%;
+    background: transparent;
+  }
+}

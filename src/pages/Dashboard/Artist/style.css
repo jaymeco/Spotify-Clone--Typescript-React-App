@@ -95,3 +95,16 @@
 .popular-track-list li:hover .track-index {
   display: none;
 }
+
+@media screen and (max-width: 414px)  {
+  .artist-container {
+    display: block;
+    overflow: auto;
+    height: 100%;
+  }
+  .popular-others-container{
+    width: 100% !important;
+    overflow: hidden !important;
+    max-height: 490vh !important;
+  }
+}

@@ -6,6 +6,7 @@
 }
 .tracks-others-container{
   width: 62%;
+  height: 100vh;
   margin-left: 1%;
   padding: 2rem 1rem;
   max-width: 100%;
@@ -41,12 +42,16 @@
   color: #fff;
   font-size: 1.1rem;
   font-weight: bold;
-  border-radius: 15px 0 0 15px;
+  border-radius: 15px;
   transition: ease-in-out .3s;
 }
 
 .btn-middle {
   border-radius: 0px !important;
+}
+
+.btn-first {
+  border-radius: 15px 0px 0px 15px !important;
 }
 
 .btn-last {
@@ -166,4 +171,27 @@
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
+}
+
+@media screen and (max-width: 414px) {
+  .album-container {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+  }
+  .tracks-others-container {
+    width: 100%;
+    height: 440vh;
+    overflow: hidden;
+    margin: 5rem 0rem;
+  }
+  .others-albums .others-container-row {
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 5rem;
+    align-items: center;
+  }
+  .btn-container button {
+    width: 18vw;
+  }
 }
