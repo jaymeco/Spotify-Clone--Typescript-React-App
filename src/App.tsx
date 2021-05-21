@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ViewAlbum from './pages/Dashboard/ViewAlbum';
 import Artist from './pages/Dashboard/Artist';
 import Discography from './pages/Dashboard/Discography';
-import FirstPage from './pages/App/FirstPage';
+import FirstPage from './pages/App/firstpage';
 import Player from './pages/components/Player';
 import { PlayerContext } from './pages/Contexts/player';
 import { useRef, useState, useMemo } from 'react';
