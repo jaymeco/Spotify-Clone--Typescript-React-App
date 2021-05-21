@@ -4,7 +4,7 @@ import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
 import Header from '../components/Header';
 import InitialCard from '../components/InitialCard';
-import SearchArtistCard from './components/SearchArtistCard';
+import SearchArtistCard from './components/searchArtistCard';
 import SearchCard from './components/SearchCard';
 import SearchMusicCard from './components/SearchMusicCard';
 import './style.css';
