@@ -1,6 +1,7 @@
 .album-card{
   position: relative;
   margin-top: 1rem;
+  margin-left: 1rem;
 }
 
 .album-card img{

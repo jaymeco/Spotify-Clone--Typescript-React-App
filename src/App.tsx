@@ -8,9 +8,9 @@ import FirstPage from './pages/App/FirstPage';
 import Player from './pages/components/Player';
 import { PlayerContext } from './pages/Contexts/player';
 import { useRef, useState, useMemo } from 'react';
+import ProtectedRoute from './routes/protected';
 
 function App() {
-  // const [] = useMemo();
   const [track, setTrack] = useState('');
   const [isPlaying, setisPlaying] = useState(false);
   const [infoTrack, setInfoTrack] = useState<any>();
@@ -25,16 +25,12 @@ function App() {
       },
       setNewTrack: (str: string) => {
         setTrack(str);
-        // setAudio(new Audio(str));
       },
       play: async () => {
-        // musicRef.current?.currentTime
-        await musicRef.current?.play();
-        // audio.play();
+        await musicRef.current?.play();;
       },
       stop: () => {
         musicRef.current?.pause();
-        // audio.pause();
       }
     }
   }, [])
@@ -48,32 +44,45 @@ function App() {
     }}>
 
       <BrowserRouter>
-        <Player
-          play={play}
-          stop={stop}
-          infoTrack={infoTrack}
-          isPlaying={isPlaying}
-          setIsPlaying={setisPlaying}
-          setTrack={setTrack}
-          track={track}
-          musicRef={musicRef}
-        />
         <Switch>
           <Route path="/" exact >
             <FirstPage />
           </Route>
-          <Route path="/home" exact >
-            <Home />
-          </Route>
-          <Route path="/album/:id" exact >
-            <ViewAlbum />
-          </Route>
-          <Route path="/artist/:id" exact >
-            <Artist />
-          </Route>
-          <Route path="/artist/:id/discography" exact >
-            <Discography />
-          </Route>
+          <>
+            <Player
+              play={play}
+              stop={stop}
+              infoTrack={infoTrack}
+              isPlaying={isPlaying}
+              setIsPlaying={setisPlaying}
+              setTrack={setTrack}
+              track={track}
+              musicRef={musicRef}
+            />
+            <ProtectedRoute
+              path="/home"
+              exact
+              component={Home}
+            />
+            <ProtectedRoute
+
+              path="/album/:id"
+              exact
+              component={ViewAlbum}
+            />
+            <ProtectedRoute
+
+              path="/artist/:id"
+              exact
+              component={Artist}
+            />
+            <ProtectedRoute
+
+              path="/artist/:id/discography"
+              exact
+              component={Discography}
+            />
+          </>
         </Switch>
       </BrowserRouter>
     </PlayerContext.Provider>

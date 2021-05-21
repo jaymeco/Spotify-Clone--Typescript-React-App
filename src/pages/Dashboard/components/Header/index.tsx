@@ -14,17 +14,18 @@ export default function Header({ setSearchData }: IProps) {
   const navigation = useHistory();
   const [value, setValue] = useState('');
   const [type, setType] = useState('album');
-
   
   const search = useCallback(()=>{
     async function getSearchData() {
       try {
-        console.log(type);
+        api.defaults.headers['Authorization'] = localStorage.getItem('token');
+
         if(value === '') return;
         const { data } = await api.post('/search', {
           search: value,
           type,
         });
+
         if(setSearchData){
           if(data?.albums){
             setSearchData(data?.albums.items);
@@ -35,7 +36,9 @@ export default function Header({ setSearchData }: IProps) {
           }
         }
       } catch (error) {
-        console.log(error);
+        if(error.response?.body?.error.message === 'The access token expired'){
+          navigation.push('/');
+        }
       }
     }
 
@@ -74,7 +77,6 @@ export default function Header({ setSearchData }: IProps) {
             ): null
           }
         </div>
-        <h3>Playlists</h3>
       </header>
     </>
   );

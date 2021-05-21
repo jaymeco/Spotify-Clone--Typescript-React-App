@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
 import { usePlayerContext } from '../../Contexts/player';
@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import Banner from './components/Banner';
 import './style.css';
 import { IoIosPlay, IoIosPause } from 'react-icons/io';
+import ModalError from '../components/ModalError';
 
 interface IImages {
   url: string;
@@ -48,21 +49,29 @@ export default function ViewAlbum() {
   const [isLoading, setIsloading] = useState(true);
   const [discs, setDiscs] = useState<number[]>([]);
   const [currentDisc, setCurrentdisc] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
   const { setTrack, isPlaying, track, setIsPlaying, play, stop, setInfoTrack } = usePlayerContext();
 
   useEffect(() => {
     async function getData() {
       try {
-        api.defaults.headers['Authorization'] = localStorage.getItem('token')
+        api.defaults.headers['Authorization'] = localStorage.getItem('token');
+
         const { id } = params;
+
         const { data } = await api.get(`/album/${id}`);
+
         setAlbums(data.some_albums.items);
         setArtist(data.artist);
         setAlbum(data.album);
         separeteDiscs(data.album);
         setIsloading(false);
+
       } catch (error) {
-        console.log(error.response);
+        if (error.response?.body?.error.message === 'The access token expired') {
+          history.push('/');
+        }
       }
     }
     getData()
@@ -105,14 +114,14 @@ export default function ViewAlbum() {
       } else {
         stop();
         setInfoTrack(
-          Object.assign(Itrack, {album: album})
+          Object.assign(Itrack, { album: album })
         );
         setTrack(Itrack?.preview_url);
         await play();
         setIsPlaying(true);
       }
     } else {
-      alert('Está musica não possui uma demo :(');
+      setIsOpen(true);
     }
   }
 
@@ -203,9 +212,8 @@ export default function ViewAlbum() {
                               <p className="track-index">{index + 1}</p>
                             )
                           }
-                          {/* <p>{index + 1}</p> */}
                           <p
-                            style={{ color: `${item?.preview_url === track? '#1DB954': '#fff'}` }}
+                            style={{ color: `${item?.preview_url === track ? '#1DB954' : '#fff'}` }}
                           >
                             {item.name}
                           </p>
@@ -238,6 +246,10 @@ export default function ViewAlbum() {
             </div>
           </div>
         </div>
+        <ModalError
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       </div>
     </>
   );

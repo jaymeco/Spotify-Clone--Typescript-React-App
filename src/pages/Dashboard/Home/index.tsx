@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
 import Header from '../components/Header';
@@ -6,7 +7,6 @@ import InitialCard from '../components/InitialCard';
 import SearchArtistCard from './components/SearchArtistCard';
 import SearchCard from './components/SearchCard';
 import SearchMusicCard from './components/SearchMusicCard';
-import SpotifyPlayback from 'react-spotify-web-playback';
 import './style.css';
 
 interface IArtists {
@@ -31,20 +31,25 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchData, setSearchData] = useState<any[]>([]);
   const [recentSearch, setRecentSearch] = useState<any[]>();
+  const history = useHistory();
 
   useEffect(() => {
     async function Data() {
       try {
-        api.defaults.headers['Authorization'] = localStorage.getItem('token')
+        api.defaults.headers['Authorization'] = localStorage.getItem('token');
+
         const { data } = await api.get('/albums/new-realeses');
+
         setState(data?.albums.items);
-        // console.log(data?.albums.items);
+        
         if (localStorage.getItem('recenty_searched')) {
           setRecentSearch(JSON.parse(localStorage.getItem('recenty_searched') as string));
         }
         setIsLoading(false);
       } catch (error) {
-        console.log(error.response);
+        if(error.response?.body?.error.message === 'The access token expired'){
+          history.push('/');
+        }
       }
 
     }
@@ -78,6 +83,7 @@ export default function Home() {
                     artist={items['album'].artist}
                     artist_id={items['album'].artist_id}
                     id={items['album'].id}
+                    key={items['album'].id}
                     setSearchData={setRecentSearch}
                   />
                 );

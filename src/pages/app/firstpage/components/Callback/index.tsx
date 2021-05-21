@@ -17,7 +17,11 @@ export function Callback({ code }: Iprops) {
     function setData() {
       if (accesstoken) {
         localStorage.setItem('token', accesstoken);
+
+        localStorage.setItem('generate_token_time', new Date().toDateString());
+
         api.defaults.headers['Authorization'] = accesstoken
+        
         if (localStorage.getItem('token') !== '') {
           history.push('/home');
         }
@@ -26,7 +30,9 @@ export function Callback({ code }: Iprops) {
     }
 
     setData();
-  }, [accesstoken])
+  }, [accesstoken]);
+
+
   return (
     <>
       <Loading />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { api } from '../../../services/api';
 import { Loading } from '../../components/Loading';
 import { usePlayerContext } from '../../Contexts/player';
@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import Banner from './components/Banner';
 import { IoIosPlay, IoIosPause } from 'react-icons/io';
 import './style.css';
+import ModalError from '../components/ModalError';
 
 interface IFollowers {
   total: number;
@@ -46,21 +47,34 @@ export default function Artist() {
   const [artist, setArtist] = useState<IData>();
   const [someAlbums, setSomeAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { setTrack, isPlaying, track, setIsPlaying, play, stop, setInfoTrack } = usePlayerContext();
+  const [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
+  const { 
+    setTrack,
+    isPlaying,
+    track,
+    setIsPlaying,
+    play,
+    stop,
+    setInfoTrack
+  } = usePlayerContext();
 
   useEffect(() => {
     async function getData() {
       try {
+        api.defaults.headers['Authorization'] = localStorage.getItem('token');
         const { id } = params;
 
         const { data } = await api.get(`/artists/${id}`);
 
-        setArtist(data.artist)
-        setState(data.top_track?.tracks)
+        setArtist(data.artist);
+        setState(data.top_track?.tracks);
         setSomeAlbums(data.some_albums?.items);
         setIsLoading(false);
       } catch (error) {
-        console.log(error.response);
+        if(error.response?.body?.error.message === 'The access token expired'){
+          history.push('/');
+        }
       }
 
     }
@@ -74,7 +88,7 @@ export default function Artist() {
     return `${minutes}:${(Number(seconds) < 10 ? "0" : "")}${seconds}`;
   }
 
-  async function playOrStop(Itrack: ITrack) {
+  function playOrStop(Itrack: ITrack) {
     if (Itrack?.preview_url) {
       if (isPlaying && Itrack?.preview_url === track) {
         setIsPlaying(false);
@@ -83,11 +97,11 @@ export default function Artist() {
         stop();
         setInfoTrack(Itrack);
         setTrack(Itrack?.preview_url);
-        await play();
+        play();
         setIsPlaying(true);
       }
     } else {
-      alert('Está musica não possui uma demo :(');
+      setIsOpen(true);
     }
   }
 
@@ -118,7 +132,7 @@ export default function Artist() {
                   >
                     <div>
                       {
-                        isPlaying &&  item?.preview_url === track ? (
+                        isPlaying && item?.preview_url === track ? (
                           <IoIosPause
                             className="btn-player"
                             onClick={() => playOrStop(item)}
@@ -133,13 +147,13 @@ export default function Artist() {
                         )
                       }
                       {
-                        (isPlaying && item?.preview_url === track)? (
-                          <img 
+                        (isPlaying && item?.preview_url === track) ? (
+                          <img
                             className="is-playing-img"
-                            src="https://open.scdn.co/cdn/images/equaliser-animated-green.73b73928.gif" 
+                            src="https://open.scdn.co/cdn/images/equaliser-animated-green.73b73928.gif"
                             alt="Is playing gif"
                           />
-                        ): (
+                        ) : (
                           <p className="track-index">{index + 1}</p>
                         )
                       }
@@ -147,7 +161,7 @@ export default function Artist() {
                         src={item.album.images[0].url}
                         alt={`Album - ${item.album.name}`}
                       />
-                      <p 
+                      <p
                         style={{ color: `${item.preview_url === track ? '#1DB954' : '#fff'}` }}
                       >
                         {item.name}
@@ -180,6 +194,10 @@ export default function Artist() {
             </div>
           </div>
         </div>
+        <ModalError
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       </div>
     </>
   );
